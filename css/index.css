@@ -3,7 +3,7 @@ html,body{height:100%;overflow:hidden;}
 html{font-size:14px;}
 .sign-in-top{margin:1rem 0;}
 .sign-in-top div{margin-bottom:1rem;}
-.card-box{width: 20%;height :7.5rem;float: left;margin: 2.5%;position: relative;
+.card-box{width: 20%;height :7rem;float: left;margin: 2.5%;position: relative;
 -webkit-transform: rotateY(0deg);-webkit-transform-style: preserve-3d;transition: all 0.5s ease-in;
 transform-origin: 50% 50%;}
 .card-box:nth-child(4n){margin:2.5% 0 2.5% 2.5%;}
