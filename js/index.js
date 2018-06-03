@@ -6,10 +6,11 @@ $(function() {
     var total;
     var pageSize = 16;
     var isSelected = false;
+    var serverUrl = "https://zhjgh.github.io/sign/"
 
     $.ajax({
         type: 'GET',
-        url: '../json/init.json',
+        url: serverUrl + 'json/init.json',
         success: function(res) {
             if (res.status == '0') {
                 schoolId = res.data.schoolId;
@@ -20,7 +21,7 @@ $(function() {
 
     $.ajax({
         type: 'GET',
-        url: '../json/school.json',
+        url: serverUrl + 'json/school.json',
         success: function(res) {
             if (res.status == '0') {
                 var str = '';
@@ -34,7 +35,7 @@ $(function() {
 
     $.ajax({
         type: 'GET',
-        url: '../json/data.json',
+        url: serverUrl + 'json/data.json',
         success: function(res) {
             if (res.status == '0') {
                 var str = '';
@@ -50,7 +51,7 @@ $(function() {
     function getData(heng_idx, shu_idx) {
         $.ajax({
             type: 'GET',
-            url: '../json/data.json',
+            url: serverUrl + 'json/data.json',
             success: function(res) {
                 if (res.status == '0') {
                     var str = "";
@@ -145,7 +146,7 @@ $(function() {
                 var idx = that.attr('data-id');
                 $.ajax({
                     type: 'GET',
-                    url: '../json/data.json',
+                    url: serverUrl + 'json/data.json',
                     success: function(res) {
                         if (res.status == '0') {
                             var str = "";
