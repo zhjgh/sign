@@ -1,0 +1,45 @@
+/* 超小屏幕（手机，小于 768px） */
+html,body{height:100%;overflow:hidden;}
+html{font-size:14px;}
+.sign-in-top{margin:1rem 0;}
+.sign-in-top div{margin-bottom:1rem;}
+.card-box{width: 20%;height :7.5rem;float: left;margin: 2.5%;position: relative;
+-webkit-transform: rotateY(0deg);-webkit-transform-style: preserve-3d;transition: all 0.5s ease-in;
+transform-origin: 50% 50%;}
+.card-box:nth-child(4n){margin:2.5% 0 2.5% 2.5%;}
+.card-box div{width:100%;height:100%;position: absolute;left: 0px;top: 0px;-webkit-backface-visibility: hidden;}
+.card-box div img{width:100%;height:100%;}
+.side-front {-webkit-transform: rotateY(0deg);}
+.side-back {-webkit-transform: rotateY(180deg);}
+#school-list{width:10rem;height:2rem;border:1px #ccc solid;}
+.msg{height: 2rem;line-height: 2rem;}
+.carousel{width: 90%;margin:0 auto;}
+/* #heng{border: 1px red solid;} */
+#heng .left{position:absolute;left:-20px;top:50%;margin-top:-8px;cursor:pointer;}
+#heng .right{position:absolute;right:-20px;top:50%;margin-top:-8px;cursor:pointer;}
+#heng .up{position:absolute;left:50%;top:-20px;margin-left:-7px;cursor:pointer;}
+#heng .down{position:absolute;left:50%;bottom:-20px;margin-left:-7px;cursor: pointer;}
+#sign-btn{text-align: center;margin-top:2rem;cursor:pointer;}
+
+/* 小屏幕（平板，大于等于 768px） */
+
+@media (min-width: 768px) {
+    html,body{font-size: 16px;}
+    .card-box{height:4rem;}
+}
+
+/* 中等屏幕（桌面显示器，大于等于 992px） */
+
+@media (min-width: 992px) {
+    html,body{font-size: 18px;}
+    .card-box{height:4.5rem;}
+    .msg{text-align: center;}
+}
+
+/* 大屏幕（大桌面显示器，大于等于 1200px） */
+
+@media (min-width: 1200px) {
+	html,body{font-size: 20px;}
+	.card-box{height:3.2rem;}
+	.msg{text-align: center;}
+}
