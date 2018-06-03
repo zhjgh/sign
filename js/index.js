@@ -133,61 +133,52 @@ $(function() {
 
     $(document).on("click", '.card-box', function() {
         var that = $(this)
-        if (!isSelected) {
-            isSelected = true;
-            that.addClass('side-back').siblings().removeClass('side-back');
-            setTimeout(function() {
-                $(".card-box").removeClass('side-back');
-                isSelected = false;
-            }, 1000)
-        }
+        that.addClass('side-back').siblings().removeClass('side-back');
         $("#sign-btn").on('click', '.btn-primary', function() {
-            if (isSelected) {
-                var idx = that.attr('data-id');
-                $.ajax({
-                    type: 'GET',
-                    url: serverUrl + 'data.json',
-                    success: function(res) {
-                        if (res.status == '0') {
-                            var str = "";
-                            var data = res.schoolList[heng_idx].data;
-                            var start = pageSize * shu_idx;
-                            var end = pageSize + pageSize * shu_idx;
-                            total = data.length;
-                            if (shu_idx == parseInt(total / pageSize)) {
-                                end = total;
-                            }
-                            for (var j = start; j < end; j++) {
-                                if (data[j] && data[j].isShow) {
+            var idx = that.attr('data-id');
+            $.ajax({
+                type: 'GET',
+                url: serverUrl + 'data.json',
+                success: function(res) {
+                    if (res.status == '0') {
+                        var str = "";
+                        var data = res.schoolList[heng_idx].data;
+                        var start = pageSize * shu_idx;
+                        var end = pageSize + pageSize * shu_idx;
+                        total = data.length;
+                        if (shu_idx == parseInt(total / pageSize)) {
+                            end = total;
+                        }
+                        for (var j = start; j < end; j++) {
+                            if (data[j] && data[j].isShow) {
+                                str += '<div class="card-box active" data-id="' + data[j].id + '">' +
+                                    '<div class="side-front">' +
+                                    '<img src="img/head.jpg" />' +
+                                    '</div>' +
+                                    '</div>'
+                            } else {
+                                if (data[j].id == idx) {
                                     str += '<div class="card-box active" data-id="' + data[j].id + '">' +
                                         '<div class="side-front">' +
                                         '<img src="img/head.jpg" />' +
                                         '</div>' +
                                         '</div>'
                                 } else {
-                                    if (data[j].id == idx) {
-                                        str += '<div class="card-box active" data-id="' + data[j].id + '">' +
-                                            '<div class="side-front">' +
-                                            '<img src="img/head.jpg" />' +
-                                            '</div>' +
-                                            '</div>'
-                                    } else {
-                                        str += '<div class="card-box" data-id="' + data[j].id + '">' +
-                                            '<div class="side-front">' +
-                                            '<img src="img/front.jpg" />' +
-                                            '</div>' +
-                                            '<div class="side-back">' +
-                                            '<img src="img/back.jpg" />' +
-                                            '</div>' +
-                                            '</div>';
-                                    }
+                                    str += '<div class="card-box" data-id="' + data[j].id + '">' +
+                                        '<div class="side-front">' +
+                                        '<img src="img/front.jpg" />' +
+                                        '</div>' +
+                                        '<div class="side-back">' +
+                                        '<img src="img/back.jpg" />' +
+                                        '</div>' +
+                                        '</div>';
                                 }
                             }
-                            $("#heng .carousel-inner .item").eq(heng_idx).html(str);
                         }
+                        $("#heng .carousel-inner .item").eq(heng_idx).html(str);
                     }
-                });
-            }
+                }
+            });
         });
     });
 })
