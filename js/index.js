@@ -6,7 +6,7 @@ $(function() {
     var total;
     var pageSize = 16;
     var isSelected = false;
-    var serverUrl = "https://zhjgh.github.io/sign/json/";
+    var serverUrl = "json/";
 
     $.ajax({
         type: 'GET',
