@@ -132,12 +132,14 @@ $(function() {
     });
 
     $(document).on("click", '.card-box', function() {
+        if ($(this).hasClass('active')) return false;
+
         var that = $(this)
-        // clearTimeout(timer);
         that.addClass('side-back').siblings().removeClass('side-back');
         setTimeout(function() {
             that.removeClass('side-back');
         }, 1000);
+
         $("#sign-btn").on('click', '.btn-primary', function() {
             var idx = that.attr('data-id');
             $.ajax({
