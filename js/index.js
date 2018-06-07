@@ -8,6 +8,7 @@ $(function() {
     var isSelected = false;
     var serverUrl = "json/";
 
+
     $.ajax({
         type: 'GET',
         url: serverUrl + 'init.json',
@@ -54,6 +55,9 @@ $(function() {
             url: serverUrl + 'data.json',
             success: function(res) {
                 if (res.status == '0') {
+                    if (res.schoolList.length > 1) {
+                        $("#heng .right").show();
+                    }
                     var str = "";
                     var data = res.schoolList[heng_idx].data;
                     var start = pageSize * shu_idx;
@@ -99,6 +103,7 @@ $(function() {
     getData(heng_idx, shu_idx);
 
     $("#heng").on('click', '.right', function() {
+        // if (heng_idx >= $("#heng .carousel-inner .item").length - 2) $(this).hide();
         if (heng_idx >= $("#heng .carousel-inner .item").length - 1) return false;
         heng_idx++;
         shu_idx = 0;
