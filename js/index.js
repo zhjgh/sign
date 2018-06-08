@@ -3,9 +3,9 @@ $(function() {
     var heng_idx = 0;
     var shu_idx = 0;
     var schoolId;
-    var total;
+    var shu_total;
+    var heng_total;
     var pageSize = 16;
-    var isSelected = false;
     var serverUrl = "json/";
 
 
@@ -55,17 +55,43 @@ $(function() {
             url: serverUrl + 'data.json',
             success: function(res) {
                 if (res.status == '0') {
-                    if (res.schoolList.length > 1) {
-                        $("#heng .right").show();
-                    }
                     var str = "";
                     var data = res.schoolList[heng_idx].data;
                     var start = pageSize * shu_idx;
                     var end = pageSize + pageSize * shu_idx;
-                    total = data.length;
-                    if (shu_idx == parseInt(total / pageSize)) {
-                        end = total;
+                    shu_total = data.length;
+                    heng_total = res.schoolList.length;
+
+                    if (heng_total > 1) {
+                        $("#heng .right").show();
                     }
+                    if (heng_idx >= heng_total - 1) {
+                        $("#heng .right").hide();
+                    }
+                    if (heng_idx >= 1) {
+                        $("#heng .left").show();
+                    }
+                    if (heng_idx == 0) {
+                        $("#heng .left").hide();
+                    }
+                    if (shu_idx == parseInt(shu_total / pageSize)) {
+                        end = shu_total;
+                    }
+
+
+                    if (parseInt(shu_total / pageSize) > 1) {
+                        $("#heng .down").show();
+                    }
+                    if (shu_idx >= 1) {
+                        $("#heng .up").show();
+                    }
+                    if (shu_idx == 0) {
+                        $("#heng .up").hide();
+                    }
+                    if (shu_idx >= parseInt(shu_total / pageSize)) {
+                        $("#heng .down").hide();
+                    }
+
                     console.log(`start:${start}, end:${end}`)
                     console.log(`heng_idx:${heng_idx}, shu_idx:${shu_idx}`)
 
@@ -103,10 +129,9 @@ $(function() {
     getData(heng_idx, shu_idx);
 
     $("#heng").on('click', '.right', function() {
-        // if (heng_idx >= $("#heng .carousel-inner .item").length - 2) $(this).hide();
-        if (heng_idx >= $("#heng .carousel-inner .item").length - 1) return false;
         heng_idx++;
         shu_idx = 0;
+        if (heng_idx >= heng_total) return false;
         getData(heng_idx, shu_idx);
     });
 
@@ -118,7 +143,7 @@ $(function() {
     });
 
     $("#heng").on('click', '.down', function() {
-        if (shu_idx >= parseInt(total / pageSize)) return false;
+        if (shu_idx >= parseInt(shu_total / pageSize)) return false;
         shu_idx++;
         getData(heng_idx, shu_idx);
     });
@@ -156,9 +181,9 @@ $(function() {
                         var data = res.schoolList[heng_idx].data;
                         var start = pageSize * shu_idx;
                         var end = pageSize + pageSize * shu_idx;
-                        total = data.length;
-                        if (shu_idx == parseInt(total / pageSize)) {
-                            end = total;
+                        shu_total = data.length;
+                        if (shu_idx == parseInt(shu_total / pageSize)) {
+                            end = shu_total;
                         }
                         for (var j = start; j < end; j++) {
                             if (data[j] && data[j].isShow) {
