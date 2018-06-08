@@ -1,14 +1,15 @@
 $(function() {
 
-    var heng_idx = 0;
-    var shu_idx = 0;
-    var schoolId;
-    var shu_total;
-    var heng_total;
-    var pageSize = 16;
-    var serverUrl = "json/";
+    var heng_idx = 0; //横向id
+    var shu_idx = 0; //竖向id
+    var schoolId; //学校id
+    var shu_total; // 竖向总数
+    var heng_total; //横向总数
+    var pageSize = 16; //每页数量
+    var serverUrl = "json/"; //请求地址
 
 
+    // 获取学校ID
     $.ajax({
         type: 'GET',
         url: serverUrl + 'init.json',
@@ -19,7 +20,7 @@ $(function() {
         }
     });
 
-
+    // 获取学校数据
     $.ajax({
         type: 'GET',
         url: serverUrl + 'school.json',
@@ -34,6 +35,7 @@ $(function() {
         }
     });
 
+    // 获取页数
     $.ajax({
         type: 'GET',
         url: serverUrl + 'data.json',
@@ -49,6 +51,7 @@ $(function() {
         }
     });
 
+    // 获取数据
     function getData(heng_idx, shu_idx) {
         $.ajax({
             type: 'GET',
@@ -56,6 +59,7 @@ $(function() {
             success: function(res) {
                 if (res.status == '0') {
                     var str = "";
+                    var medal = "";
                     var data = res.schoolList[heng_idx].data;
                     var start = pageSize * shu_idx;
                     var end = pageSize + pageSize * shu_idx;
@@ -100,20 +104,30 @@ $(function() {
                     } else {
                         $("#sign-btn").find('button').addClass('btn-default').removeClass('btn-primary');
                     }
+
+
                     for (var j = start; j < end; j++) {
                         if (data[j] && data[j].isShow) {
+                            if (data[j].num == '1') {
+                                medal = '<div class="gift"></div></div>'
+                            } else if (data[j].num == '2') {
+                                medal = '<div class="gift"></div><div class="gift"></div>'
+                            } else {
+                                medal = '<div class="gift"></div><div class="gift"></div><div>...</div>'
+                            }
                             str += '<div class="card-box active" data-id="' + data[j].id + '">' +
                                 '<div class="side-front">' +
-                                '<img src="img/head.jpg" />' +
+                                '<img class="bg" src="img/head.jpg" />' +
+                                '<div class="xz-box">' + medal + '</div>' +
                                 '</div>' +
                                 '</div>'
                         } else {
                             str += '<div class="card-box" data-id="' + data[j].id + '">' +
                                 '<div class="side-front">' +
-                                '<img src="img/front.jpg" />' +
+                                '<img class="bg" src="img/front.jpg" />' +
                                 '</div>' +
                                 '<div class="side-back">' +
-                                '<img src="img/back.jpg" />' +
+                                '<img class="bg" src="img/back.jpg" />' +
                                 '</div>' +
                                 '</div>';
                         }
@@ -126,8 +140,10 @@ $(function() {
         });
     }
 
+    // 初始化获取数据
     getData(heng_idx, shu_idx);
 
+    // 点击向右切换
     $("#heng").on('click', '.right', function() {
         heng_idx++;
         shu_idx = 0;
@@ -135,6 +151,7 @@ $(function() {
         getData(heng_idx, shu_idx);
     });
 
+    // 点击向左切换
     $("#heng").on('click', '.left', function() {
         if (heng_idx <= 0) return false;
         heng_idx--;
@@ -142,25 +159,28 @@ $(function() {
         getData(heng_idx, shu_idx);
     });
 
+    // 点击向下切换
     $("#heng").on('click', '.down', function() {
         if (shu_idx >= parseInt(shu_total / pageSize)) return false;
         shu_idx++;
         getData(heng_idx, shu_idx);
     });
 
+    // 点击向上切换
     $("#heng").on('click', '.up', function() {
         if (shu_idx <= 0) return false;
         shu_idx--;
         getData(heng_idx, shu_idx);
     });
 
-
+    // 选择学校
     $("#school-list").on('change', function() {
         var id = $(this).find("option:selected").attr('data-id');
         heng_idx = id;
         getData(heng_idx, shu_idx)
     });
 
+    // 点击翻牌
     $(document).on("click", '.card-box', function() {
         if ($(this).hasClass('active')) return false;
 
@@ -170,6 +190,7 @@ $(function() {
             that.removeClass('side-back');
         }, 1000);
 
+        // 点击签到
         $("#sign-btn").on('click', '.btn-primary', function() {
             var idx = that.attr('data-id');
             $.ajax({
@@ -178,6 +199,7 @@ $(function() {
                 success: function(res) {
                     if (res.status == '0') {
                         var str = "";
+                        var medal = "";
                         var data = res.schoolList[heng_idx].data;
                         var start = pageSize * shu_idx;
                         var end = pageSize + pageSize * shu_idx;
@@ -187,25 +209,37 @@ $(function() {
                         }
                         for (var j = start; j < end; j++) {
                             if (data[j] && data[j].isShow) {
+
+                                if (data[j].num == '1') {
+                                    medal = '<div class="gift"></div></div>'
+                                } else if (data[j].num == '2') {
+                                    medal = '<div class="gift"></div><div class="gift"></div>'
+                                } else {
+                                    medal = '<div class="gift"></div><div class="gift"></div><div>...</div>'
+                                }
+
+
                                 str += '<div class="card-box active" data-id="' + data[j].id + '">' +
                                     '<div class="side-front">' +
-                                    '<img src="img/head.jpg" />' +
+                                    '<img class="bg" src="img/head.jpg" />' +
+                                    '<div class="xz-box">' + medal + '</div>' +
                                     '</div>' +
                                     '</div>'
                             } else {
                                 if (data[j].id == idx) {
                                     str += '<div class="card-box active" data-id="' + data[j].id + '">' +
                                         '<div class="side-front">' +
-                                        '<img src="img/head.jpg" />' +
+                                        '<img class="bg" src="img/head.jpg" />' +
+                                        '<div class="xz-box"><div class="gift"></div></div>' +
                                         '</div>' +
                                         '</div>'
                                 } else {
                                     str += '<div class="card-box" data-id="' + data[j].id + '">' +
                                         '<div class="side-front">' +
-                                        '<img src="img/front.jpg" />' +
+                                        '<img class="bg" src="img/front.jpg" />' +
                                         '</div>' +
                                         '<div class="side-back">' +
-                                        '<img src="img/back.jpg" />' +
+                                        '<img class="bg" src="img/back.jpg" />' +
                                         '</div>' +
                                         '</div>';
                                 }
